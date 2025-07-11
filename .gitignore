@@ -1,0 +1,11 @@
+# Sensitive files
+code/credentials.json
+code/token.json
+
+# Python virtual environment
+code/venv/
+
+# Python cache
+code/__pycache__/
+
+# Added a comment to force Vercel rebuild
