@@ -8,7 +8,7 @@ let socket: Socket;
 
 const Chat = () => {
   const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState<string[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [visits, setVisits] = useState(0);
 
