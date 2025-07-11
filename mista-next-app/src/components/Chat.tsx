@@ -39,7 +39,7 @@ const Chat = () => {
     };
   }, []);
 
-  const sendMessage = (e) => {
+  const sendMessage = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (message) {
       socket.emit('message', message);
