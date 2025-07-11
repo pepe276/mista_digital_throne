@@ -2,17 +2,7 @@ import { Server as SocketIOServer, Socket } from 'socket.io';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { Server as HttpServer } from 'http';
 
-interface SocketServer extends HttpServer {
-  io?: SocketIOServer;
-}
-
-interface CustomNextApiResponse extends NextApiResponse {
-  socket: {
-    server: SocketServer;
-  };
-}
-
-const SocketHandler = (req: NextApiRequest, res: CustomNextApiResponse) => {
+const SocketHandler = (req: NextApiRequest, res: NextApiResponse & { socket: { server: HttpServer & { io?: SocketIOServer } } }) => {
   if (res.socket.server.io) {
     console.log('Socket is already running');
   } else {
