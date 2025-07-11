@@ -1,0 +1,30 @@
+2025-06-21 22:38:25,980 - __main__ - ERROR - Виникла несподівана помилка в циклі чату під час генерації LLM: name 'get_motifs_and_symbols' is not defined
+Traceback (most recent call last):
+  File "D:\lama\main_mista_bot.py", line 315, in chat_loop
+    prompt_messages, llm_gen_params = await prompt_generator.generate_prompt(
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\lama\prompt_generator.py", line 373, in generate_prompt
+    all_motifs_symbols = get_motifs_and_symbols()
+                         ^^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'get_motifs_and_symbols' is not defined
+2025-06-21 22:38:25,982 - fallback - ERROR - Error during LLM rephrasing: name 'get_motifs_and_symbols' is not defined
+Traceback (most recent call last):
+  File "D:\lama\main_mista_bot.py", line 315, in chat_loop
+    prompt_messages, llm_gen_params = await prompt_generator.generate_prompt(
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\lama\prompt_generator.py", line 373, in generate_prompt
+    all_motifs_symbols = get_motifs_and_symbols()
+                         ^^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'get_motifs_and_symbols' is not defined
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\lama\fallback.py", line 83, in generate_dynamic_fallback_response
+    prompt_messages, _ = await self.prompt_generator.generate_prompt(
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\lama\prompt_generator.py", line 373, in generate_prompt
+    all_motifs_symbols = get_motifs_and_symbols()
+                         ^^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'get_motifs_and_symbols' is not defined
+2025-06-21 22:38:25,983 - __main__ - ERROR - Згенеровано динамічну запасну відповідь через помилку LLM: 'Можливо, твій розум не готовий до моєї відповіді. Спробуй ще раз....' (Успіх: False)

@@ -1,0 +1,7 @@
+2025-06-17 15:16:52,788 - analyzer - ERROR - get_full_mista_lore() повернув не очікуваний тип (string), а не dict. Тип: <class 'str'>
+2025-06-17 15:17:07,874 - __main__ - ERROR - Виникла несподівана помилка в циклі чату: 'Analyzer' object has no attribute 'analyze'
+Traceback (most recent call last):
+  File "D:\lama\main_mista_bot.py", line 219, in chat_loop
+    analysis_results = analyzer.analyze(user_input_for_analysis, user_profile=user_profile)
+                       ^^^^^^^^^^^^^^^^
+AttributeError: 'Analyzer' object has no attribute 'analyze'

@@ -1,0 +1,19 @@
+2025-06-20 09:32:15,535 - __main__ - ERROR - Fatal error during initialization or execution: maximum recursion depth exceeded
+Traceback (most recent call last):
+  File "D:\lama\main_mista_bot.py", line 499, in <module>
+    analyzer_instance = Analyzer(
+                       ^^^^^^^^^
+  File "D:\lama\analyzer.py", line 54, in __init__
+    "intimacy": get_intimacy_keywords() + get_intimate_synonyms(), # Об'єднано
+                                          ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\lama\core_persona.py", line 366, in get_intimate_synonyms
+    return get_intimate_synonyms()
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\lama\core_persona.py", line 366, in get_intimate_synonyms
+    return get_intimate_synonyms()
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\lama\core_persona.py", line 366, in get_intimate_synonyms
+    return get_intimate_synonyms()
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  [Previous line repeated 994 more times]
+RecursionError: maximum recursion depth exceeded

@@ -1,0 +1,30 @@
+2025-06-20 13:06:06,096 - __main__ - ERROR - Виникла несподівана помилка в циклі чату під час генерації LLM: name 'current_datetime_str' is not defined
+Traceback (most recent call last):
+  File "D:\lama\main_mista_bot.py", line 313, in chat_loop
+    prompt_messages, llm_gen_params = await prompt_generator.generate_prompt(
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\lama\prompt_generator.py", line 456, in generate_prompt
+    current_datetime_str=current_datetime_str,
+                         ^^^^^^^^^^^^^^^^^^^^
+NameError: name 'current_datetime_str' is not defined
+2025-06-20 13:06:06,099 - fallback - ERROR - Error during LLM rephrasing: name 'current_datetime_str' is not defined
+Traceback (most recent call last):
+  File "D:\lama\main_mista_bot.py", line 313, in chat_loop
+    prompt_messages, llm_gen_params = await prompt_generator.generate_prompt(
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\lama\prompt_generator.py", line 456, in generate_prompt
+    current_datetime_str=current_datetime_str,
+                         ^^^^^^^^^^^^^^^^^^^^
+NameError: name 'current_datetime_str' is not defined
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\lama\fallback.py", line 83, in generate_dynamic_fallback_response
+    prompt_messages, _ = await self.prompt_generator.generate_prompt(
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\lama\prompt_generator.py", line 456, in generate_prompt
+    current_datetime_str=current_datetime_str,
+                         ^^^^^^^^^^^^^^^^^^^^
+NameError: name 'current_datetime_str' is not defined
+2025-06-20 13:06:06,100 - __main__ - ERROR - Згенеровано динамічну запасну відповідь через помилку LLM: 'Можливо, твій розум не готовий до моєї відповіді. Спробуй ще раз....' (Успіх: False)

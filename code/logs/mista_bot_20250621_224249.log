@@ -1,0 +1,12 @@
+2025-06-21 23:11:50,962 - __main__ - ERROR - Виникла несподівана помислова помилка в циклі чату: 'Logger' object has no attribute 'append'
+Traceback (most recent call last):
+  File "D:\lama\main_mista_bot.py", line 227, in chat_loop
+    analysis_results = analyzer.analyze(user_input_for_analysis, user_profile=user_profile)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\lama\analyzer.py", line 138, in analyze
+    "context": self._identify_context(processed_input, user_input),
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\lama\analyzer.py", line 342, in _identify_context
+    logger.append("lore_topic_place_of_residence") # Додано для Калуша
+    ^^^^^^^^^^^^^
+AttributeError: 'Logger' object has no attribute 'append'

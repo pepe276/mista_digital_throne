@@ -1,0 +1,1 @@
+fix: Use Socket type for socket variable in Chat.tsx

@@ -1,0 +1,6 @@
+2025-06-17 23:31:37,875 - __main__ - ERROR - Fatal error during initialization or execution: MonetizationManager.__init__() missing 1 required positional argument: 'validator_instance'
+Traceback (most recent call last):
+  File "D:\lama\main_mista_bot.py", line 488, in <module>
+    monetization_manager_instance = MonetizationManager(llm_interaction_instance=llm_interaction_instance, prompt_generator_instance=prompt_generator_instance, user_manager_instance=user_manager_instance)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: MonetizationManager.__init__() missing 1 required positional argument: 'validator_instance'

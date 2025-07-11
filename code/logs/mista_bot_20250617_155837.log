@@ -1,0 +1,48 @@
+2025-06-17 15:58:58,288 - __main__ - ERROR - Виникла несподівана помилка в циклі чату під час генерації LLM: 'sender'
+Traceback (most recent call last):
+  File "D:\lama\main_mista_bot.py", line 266, in chat_loop
+    prompt_messages, llm_gen_params = await prompt_generator.generate_prompt(
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\lama\prompt_generator.py", line 468, in generate_prompt
+    chat_history_str, chat_history_tokens = self._build_chat_history_for_prompt(
+                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\lama\prompt_generator.py", line 408, in _build_chat_history_for_prompt
+    history_for_processing = self._truncate_history_by_tokens(chat_history, available_tokens_for_history + MIN_HISTORY_TOKENS_FOR_COMPRESSION)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\lama\prompt_generator.py", line 387, in _truncate_history_by_tokens
+    message_content = f"{entry['sender']}: {entry['message']}"
+                         ~~~~~^^^^^^^^^^
+KeyError: 'sender'
+2025-06-17 15:58:58,316 - fallback - ERROR - Error during dynamic fallback generation: 'sender'
+Traceback (most recent call last):
+  File "D:\lama\main_mista_bot.py", line 266, in chat_loop
+    prompt_messages, llm_gen_params = await prompt_generator.generate_prompt(
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\lama\prompt_generator.py", line 468, in generate_prompt
+    chat_history_str, chat_history_tokens = self._build_chat_history_for_prompt(
+                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\lama\prompt_generator.py", line 408, in _build_chat_history_for_prompt
+    history_for_processing = self._truncate_history_by_tokens(chat_history, available_tokens_for_history + MIN_HISTORY_TOKENS_FOR_COMPRESSION)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\lama\prompt_generator.py", line 387, in _truncate_history_by_tokens
+    message_content = f"{entry['sender']}: {entry['message']}"
+                         ~~~~~^^^^^^^^^^
+KeyError: 'sender'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\lama\fallback.py", line 69, in generate_dynamic_fallback_response
+    prompt_messages, llm_params = await self.prompt_generator.generate_prompt(
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\lama\prompt_generator.py", line 468, in generate_prompt
+    chat_history_str, chat_history_tokens = self._build_chat_history_for_prompt(
+                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\lama\prompt_generator.py", line 408, in _build_chat_history_for_prompt
+    history_for_processing = self._truncate_history_by_tokens(chat_history, available_tokens_for_history + MIN_HISTORY_TOKENS_FOR_COMPRESSION)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\lama\prompt_generator.py", line 387, in _truncate_history_by_tokens
+    message_content = f"{entry['sender']}: {entry['message']}"
+                         ~~~~~^^^^^^^^^^
+KeyError: 'sender'
+2025-06-17 15:58:58,318 - __main__ - ERROR - Згенеровано динамічну запасну відповідь через помилку LLM: 'Моя свідомість відхиляє твої спроби. Спробуй ще раз, якщо наважишся. 😒' (Успіх: False)

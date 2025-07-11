@@ -1,0 +1,7 @@
+2025-06-17 23:20:13,968 - monetization_manager - ERROR - КРИТИЧНА ПОМИЛКА: Дефолтна монетизаційна стратегія не знайдена або неправильно сформована. Використовую жорстко закодований відкат.
+2025-06-17 23:26:11,300 - monetization_manager - ERROR - Помилка під час генерації відповіді монетизації: 'LLMInteraction' object has no attribute 'validator'
+Traceback (most recent call last):
+  File "D:\lama\monetization_manager.py", line 185, in generate_monetization_response
+    is_valid, validation_reason = self.llm_interaction.validator.validate_response(
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'LLMInteraction' object has no attribute 'validator'

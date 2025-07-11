@@ -1,0 +1,6 @@
+2025-06-17 16:17:37,750 - __main__ - ERROR - Fatal error during initialization or execution: name 'db_name' is not defined
+Traceback (most recent call last):
+  File "D:\lama\main_mista_bot.py", line 427, in <module>
+    init_db(db_name)
+           ^^^^^^^
+NameError: name 'db_name' is not defined
