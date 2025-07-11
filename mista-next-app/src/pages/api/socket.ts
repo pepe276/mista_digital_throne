@@ -1,12 +1,13 @@
-import { Server, Socket } from 'socket.io';
+import { Server as SocketIOServer, Socket } from 'socket.io';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { Server as HttpServer } from 'http';
 
-const SocketHandler = (req: NextApiRequest, res: NextApiResponse & { socket: { server: Server & { io?: Server } } }) => {
+const SocketHandler = (req: NextApiRequest, res: NextApiResponse & { socket: { server: HttpServer & { io?: SocketIOServer } } }) => {
   if (res.socket.server.io) {
     console.log('Socket is already running');
   } else {
     console.log('Socket is initializing');
-    const io = new Server(res.socket.server, {
+    const io = new SocketIOServer(res.socket.server, {
       path: '/api/socket_io',
       addTrailingSlash: false
     });
