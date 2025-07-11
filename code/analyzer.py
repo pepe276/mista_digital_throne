@@ -3,7 +3,7 @@ import logging
 import re
 import json
 from typing import Dict, List, Optional, Any, Tuple
-import torch # Для PyTorch operations if using a Hugging Face model
+# import torch # Для PyTorch operations if using a Hugging Face model
 import random # Для динамічної імпровізації
 
 # Import constants and data from core_persona
