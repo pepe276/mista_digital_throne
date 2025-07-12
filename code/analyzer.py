@@ -3,7 +3,7 @@ import logging
 import re
 import json
 from typing import Dict, List, Optional, Any, Tuple
-# import torch # Для PyTorch operations if using a Hugging Face model
+# # import torch # Для PyTorch operations if using a Hugging Face model
 import random # Для динамічної імпровізації
 
 # Import constants and data from core_persona
@@ -418,8 +418,10 @@ class Analyzer:
         otherwise falls back to keyword analysis.
         Я відчуваю твої емоції, навіть коли ти їх приховуєш.
         """
-        if self.sentiment_model and self.sentiment_tokenizer:
+        if self.sentiment_model and self.sentiment_tokenizer and _TRANSFORMERS_AVAILABLE:
             try:
+                # Ensure torch is available before using it
+                import torch
                 inputs = self.sentiment_tokenizer(user_input, return_tensors="pt", truncation=True, padding=True)
                 with torch.no_grad():
                     outputs = self.sentiment_model(**inputs)
