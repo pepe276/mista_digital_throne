@@ -16,7 +16,7 @@ const SocketHandler = (req: NextApiRequest, res: NextApiResponse & { socket: { s
     io.on('connection', (socket: Socket) => {
       console.log(`User connected: ${socket.id}`);
 
-      const MISTA_SOUL_API = 'https://mista-soul-api-v2-0af389391be4.herokuapp.com/';
+      const MISTA_SOUL_API = 'https://mista-chat-api-v3-009b6bf66179.herokuapp.com/';
       socket.on('message', async (msg: string) => {
         console.log(`New message from ${socket.id}: ${msg}`);
         const response = await fetch(`${MISTA_SOUL_API}/chat`, {
