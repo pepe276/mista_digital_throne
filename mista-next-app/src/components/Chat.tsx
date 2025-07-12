@@ -17,7 +17,7 @@ const Chat = () => {
       // We call the API route that initializes the socket server
       await fetch('/api/socket');
 
-      socket = io({ path: '/api/socket_io' });
+      socket = io('https://mista-chat-api-v3-009b6bf66179.herokuapp.com', { path: '/api/socket_io' });
 
       socket.on('connect', () => {
         console.log('Connected to socket server');
