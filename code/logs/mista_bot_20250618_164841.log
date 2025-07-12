@@ -1,6 +1,0 @@
-2025-06-18 16:48:47,000 - __main__ - ERROR - Fatal error during initialization or execution: FallbackGenerator.__init__() got an unexpected keyword argument 'model_config'
-Traceback (most recent call last):
-  File "D:\lama\main_mista_bot.py", line 486, in <module>
-    fallback_generator_instance = FallbackGenerator(
-                                  ^^^^^^^^^^^^^^^^^^
-TypeError: FallbackGenerator.__init__() got an unexpected keyword argument 'model_config'

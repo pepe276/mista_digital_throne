@@ -1,8 +1,0 @@
-2025-06-17 16:19:07,055 - __main__ - ERROR - Виникла несподівана помилка в циклі чату: 'first_interaction'
-Traceback (most recent call last):
-  File "D:\lama\main_mista_bot.py", line 227, in chat_loop
-    user_manager_instance.update_user_profile_after_interaction(user_profile, analysis_results)
-  File "D:\lama\user_manager.py", line 301, in update_user_profile_after_interaction
-    first_interaction_dt = datetime.fromisoformat(user_profile['first_interaction'])
-                                                  ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
-KeyError: 'first_interaction'

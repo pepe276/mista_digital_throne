@@ -1,25 +1,25 @@
-
-from fastapi import FastAPI
-from pydantic import BaseModel
-import uvicorn
-import os
-import sys
-
-# Add the parent directory to the path to allow imports from other modules
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-from main_mista_bot import get_response # Assuming main_mista_bot can be refactored to have a get_response function
+# -*- coding: utf-8 -*-
+from fastapi import FastAPI, WebSocket
+from fastapi.responses import JSONResponse
+import asyncio
+from main_mista_bot import get_response
 
 app = FastAPI()
 
-class Message(BaseModel):
-    user_id: str
-    message: str
-
 @app.post("/chat")
-async def chat(message: Message):
-    response = await get_response(message.user_id, message.message)
-    return {"response": response}
+async def chat(request: dict):
+    user_id = request.get("user_id")
+    message = request.get("message")
+    if not user_id or not message:
+        return JSONResponse(content={"error": "user_id and message are required"}, status_code=400)
 
-if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
+    response = await get_response(user_id, message)
+    return JSONResponse(content={"response": response})
+
+@app.websocket("/ws/{user_id}")
+async def websocket_endpoint(websocket: WebSocket, user_id: str):
+    await websocket.accept()
+    while True:
+        message = await websocket.receive_text()
+        response = await get_response(user_id, message)
+        await websocket.send_text(response)

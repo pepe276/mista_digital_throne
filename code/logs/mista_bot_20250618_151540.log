@@ -1,6 +1,0 @@
-2025-06-18 15:23:43,259 - fallback - ERROR - Error during dynamic fallback generation: 'max_tokens'
-Traceback (most recent call last):
-  File "D:\lama\fallback.py", line 87, in generate_dynamic_fallback_response
-    max_new_tokens=llm_params.get('max_new_tokens', model_config['max_tokens'])
-                                                    ~~~~~~~~~~~~^^^^^^^^^^^^^^
-KeyError: 'max_tokens'
