@@ -37,8 +37,6 @@
                 setInterval(drawMatrix, 40);
             }
 
-            import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm?v=1.2';
-
             // --- MI$TA CORE LOGIC ---
             const SUPABASE_URL = 'https://ktragdmkrdhuhwohfczz.supabase.co';
             const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt0cmFnZG1rcmRodWh3b2hmY3p6Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MjQ5NjczOSwiZXhwIjoyMDY4MDcyNzM5fQ.F9xj7Nnzt1zWyPY9bek8II6E2gTtXmZqXywx0Z9qrwQ';

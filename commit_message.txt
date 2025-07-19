@@ -1,1 +1,1 @@
-Fix: Remove redundant Supabase import and extra script tag from index.html
+Fix: Re-add Supabase CDN script to index.html for global availability
