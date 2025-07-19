@@ -137,7 +137,21 @@
                 // Show typing indicator
                 const typingIndicatorDiv = document.createElement('div');
                 typingIndicatorDiv.classList.add('typing-indicator');
-                typingIndicatorDiv.innerHTML = '<img src="16941.png?v=1.1" alt="Typing...">';
+                typingIndicatorDiv.innerHTML = `
+                    <svg width="40" height="40" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <filter id="neon-glow" x="-50%" y="-50%" width="200%" height="200%">
+                                <feGaussianBlur stdDeviation="3" result="coloredBlur"></feGaussianBlur>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"></feMergeNode>
+                                    <feMergeNode in="SourceGraphic"></feMergeNode>
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        <path class="pen-icon" d="M29.7,6.5l-5.7,5.7l8.5,8.5l5.7-5.7L29.7,6.5z M22.5,13.7L6.8,29.3l-1.2,5.8l5.8-1.2L27,18.2L22.5,13.7z M5,39.8
+                        c-0.6,0.6-0.6,1.5,0,2.1s1.5,0.6,2.1,0l0,0L5,39.8z" fill="var(--neon-magenta)"></path>
+                    </svg>
+                `;
                 chatBody.appendChild(typingIndicatorDiv);
                 chatBody.scrollTop = chatBody.scrollHeight;
 

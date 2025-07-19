@@ -316,24 +316,23 @@
             align-items: center;
             gap: 5px;
         }
-        .typing-indicator img {
-            width: 30px;
-            height: 30px;
-            animation: flash-glow 1.5s infinite alternate;
-            transform-origin: center;
+        .typing-indicator svg {
+            width: 40px;
+            height: 40px;
+            overflow: visible; /* Allow glow to bleed out */
         }
-        @keyframes flash-glow {
+        .pen-icon {
+            filter: url(#neon-glow);
+            animation: write-anim 1.5s infinite alternate ease-in-out;
+        }
+        @keyframes write-anim {
             0% {
-                filter: invert(58%) sepia(68%) saturate(5807%) hue-rotate(286deg) brightness(1.5) contrast(104%) drop-shadow(0 0 3px var(--neon-magenta));
-                transform: translateY(0px) rotate(0deg);
-            }
-            50% {
-                filter: invert(58%) sepia(68%) saturate(5807%) hue-rotate(286deg) brightness(2.5) contrast(104%) drop-shadow(0 0 8px var(--neon-magenta)) drop-shadow(0 0 15px rgba(255, 0, 255, 0.7));
-                transform: translateY(-3px) rotate(2deg);
+                transform: rotate(-10deg) translateX(0px);
+                filter: url(#neon-glow) brightness(1.2);
             }
             100% {
-                filter: invert(58%) sepia(68%) saturate(5807%) hue-rotate(286deg) brightness(1.5) contrast(104%) drop-shadow(0 0 3px var(--neon-magenta));
-                transform: translateY(0px) rotate(0deg);
+                transform: rotate(5deg) translateX(2px);
+                filter: url(#neon-glow) brightness(2.0);
             }
         }
         .typing-indicator span {

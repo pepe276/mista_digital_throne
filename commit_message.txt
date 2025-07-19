@@ -1,11 +1,10 @@
-Feat: Finalize CI/CD pipeline and add documentation
+Fix: Replace typing indicator with animated SVG for precise glow
 
-This commit completes the automation and documentation of the project.
+This commit resolves the persistent issue with the typing indicator's glow effect. All previous attempts using CSS filters on a PNG icon were insufficient and produced an undesirable boxy glow.
 
-1.  **Automate Render Deployments:** The `render.yaml` file has been updated with `autoDeploy: true` to ensure the backend service is automatically updated on every push to the `master` branch.
+The solution involved a complete replacement of the asset and styling method:
+1.  **Replaced PNG with SVG:** The `<img>` tag in `script.js` has been replaced with an inline SVG of a pen.
+2.  **SVG Glow Filter:** The SVG includes a `<filter>` definition for a Gaussian blur, which creates a precise neon glow that follows the exact contours of the pen's path.
+3.  **CSS Animation:** The CSS in `index.html` has been updated with a new `@keyframes` rule (`write-anim`) that animates the SVG's transform (to simulate a writing motion) and the brightness of the glow filter (to make it pulse).
 
-2.  **Refactor Backend:** The manual chat cleanup trigger has been removed from the `/chat` endpoint in `chat_backend.py`. This logic is now handled reliably by the cron job defined in `render.yaml`, preventing redundancy.
-
-3.  **Add Project README:** A comprehensive `README.md` file has been created. It details the project's architecture, the technologies and services used (GitHub Pages, Render, Supabase, Gemini), and the automated deployment workflow. This serves as the central documentation for the project.
-
-This commit marks the transition to a fully automated and well-documented system.
+This new implementation guarantees that the glow emanates only from the pen itself, finally achieving the intended visual effect.
