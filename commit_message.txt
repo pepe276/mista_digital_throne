@@ -1,1 +1,1 @@
-Fix: Correct Supabase module import and load script.js as module
+Feat: Add flashing glow animation to typing indicator icon

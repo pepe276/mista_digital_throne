@@ -316,6 +316,14 @@
             align-items: center;
             gap: 5px;
         }
+        .typing-indicator img {
+            animation: flash-glow 1.5s infinite alternate;
+        }
+        @keyframes flash-glow {
+            0% { filter: brightness(1) drop-shadow(0 0 5px var(--neon-magenta)); }
+            50% { filter: brightness(2) drop-shadow(0 0 15px var(--neon-magenta)) drop-shadow(0 0 30px var(--neon-magenta)); }
+            100% { filter: brightness(1) drop-shadow(0 0 5px var(--neon-magenta)); }
+        }
         .typing-indicator span {
             display: inline-block;
             width: 8px;
