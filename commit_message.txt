@@ -1,1 +1,1 @@
-Fix: Re-add Supabase CDN script to index.html for global availability
+Fix: Correct Supabase module import and load script.js as module
