@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MI$TA :: Digital Witch</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Roboto+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --neon-cyan: #00e5ff;
+            --neon-magenta: #ff00ff;
+            --neon-green: #39ff14;
+            --dark-bg: #010409;
+            --text-color: #c9d1d9;
+            --border-color: rgba(66, 133, 244, 0.3);
+            --card-bg: rgba(13, 17, 23, 0.8);
+            --glitch-text-shadow: 
+                -1px -1px 0px var(--neon-magenta), 
+                1px 1px 0px var(--neon-cyan);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            overflow-x: hidden;
+            cursor: none;
+        }
+        .cursor-dot, .cursor-outline {
+            pointer-events: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out, transform 0.1s linear;
+        }
+        .cursor-dot { width: 8px; height: 8px; background-color: var(--neon-cyan); }
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--neon-cyan);
+            box-shadow: 0 0 10px var(--neon-cyan), inset 0 0 10px var(--neon-cyan);
+        }
+        body:hover .cursor-dot, body:hover .cursor-outline { opacity: 1; }
+        .interactive-hover { cursor: none; }
+        .interactive-hover:hover ~ .cursor-outline {
+            transform: translate(-50%, -50%) scale(1.5);
+            background-color: rgba(0, 229, 255, 0.2);
+        }
+        .interactive-hover:hover ~ .cursor-dot { opacity: 0; }
+        #matrix-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; }
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(0deg, rgba(0,0,0,0) 0, rgba(0,0,0,0) 2px, rgba(255,255,255,0.03) 3px, rgba(255,255,255,0.03) 4px);
+            animation: scan 10s linear infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+        @keyframes scan { 0% { background-position: 0 0; } 100% { background-position: 0 100vh; } }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 0;
+            background: rgba(1, 4, 9, 0.7);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+        }
+        nav { display: flex; justify-content: space-between; align-items: center; }
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 5px var(--neon-cyan), 0 0 15px var(--neon-cyan);
+            animation: logo-glitch 5s infinite alternate;
+        }
+        @keyframes logo-glitch {
+            0%, 100% { text-shadow: 0 0 5px var(--neon-cyan), 0 0 15px var(--neon-cyan); transform: skew(0); }
+            49% { text-shadow: 0 0 5px var(--neon-cyan), 0 0 15px var(--neon-cyan); transform: skew(0); }
+            50% { text-shadow: -1px 1px 0 var(--neon-magenta), 1px -1px 0 var(--neon-green); transform: skew(2deg); }
+            51% { text-shadow: 0 0 5px var(--neon-cyan), 0 0 15px var(--neon-cyan); transform: skew(0); }
+        }
+        .nav-links { display: flex; gap: 25px; }
+        .nav-links a { color: var(--text-color); text-decoration: none; font-weight: 700; padding: 5px 10px; position: relative; transition: all 0.3s; }
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--neon-cyan);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease-in-out;
+        }
+        .nav-links a:hover { color: var(--neon-cyan); text-shadow: 0 0 5px var(--neon-cyan); }
+        .nav-links a:hover::before { transform: scaleX(1); transform-origin: left; }
+        .hero { min-height: 100vh; display: flex; align-items: center; padding-top: 100px; }
+        .hero-content { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 40px; }
+        .hero-text .glitch-layers {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            position: relative;
+            color: var(--text-color);
+            margin-bottom: 20px;
+        }
+        .glitch-layers span { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        .glitch-layers .layer-1 { color: var(--neon-magenta); animation: glitch-1 2.5s infinite; }
+        .glitch-layers .layer-2 { color: var(--neon-cyan); animation: glitch-2 2.5s infinite; }
+        @keyframes glitch-1 { 0%, 100% { clip-path: inset(55% 0 23% 0); } 25% { clip-path: inset(13% 0 49% 0); } 50% { clip-path: inset(33% 0 11% 0); } 75% { clip-path: inset(77% 0 13% 0); } }
+        @keyframes glitch-2 { 0%, 100% { clip-path: inset(78% 0 11% 0); } 25% { clip-path: inset(44% 0 19% 0); } 50% { clip-path: inset(19% 0 45% 0); } 75% { clip-path: inset(1% 0 89% 0); } }
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: var(--neon-green);
+            margin-bottom: 20px;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 3px solid var(--neon-green);
+            animation: typing 3s steps(30, end), blink-caret .75s step-end infinite;
+        }
+        @keyframes typing { from { width: 0 } to { width: 100% } }
+        @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: var(--neon-green); } }
+        .hero-image-container { position: relative; display: flex; justify-content: center; align-items: center; }
+        .hero-image-container::before, .hero-image-container::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        .hero-image-container::before { border: 2px solid var(--neon-cyan); animation: rotate 20s linear infinite; }
+        .hero-image-container::after { border: 2px solid var(--neon-magenta); animation: rotate-reverse 15s linear infinite; }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes rotate-reverse { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+        .hero-image { width: 80%; border-radius: 50%; border: 3px solid var(--dark-bg); position: relative; z-index: 2; box-shadow: 0 0 30px var(--neon-cyan); }
+        section { padding: 120px 0; border-bottom: 1px solid var(--border-color); }
+        section:last-of-type { border-bottom: none; }
+        .section-title { font-family: 'Orbitron', sans-serif; font-size: 3rem; text-align: center; margin-bottom: 60px; color: var(--neon-magenta); text-shadow: 0 0 10px var(--neon-magenta), var(--glitch-text-shadow); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .card { background: var(--card-bg); border: 1px solid var(--border-color); padding: 30px; position: relative; overflow: hidden; transition: transform 0.3s, box-shadow 0.3s; }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.1), transparent);
+            transition: left 0.6s;
+        }
+        .card:hover { transform: translateY(-10px); box-shadow: 0 0 20px var(--neon-cyan); border-color: var(--neon-cyan); }
+        .card:hover::before { left: 100%; }
+        .card-title { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; color: var(--neon-cyan); margin-bottom: 15px; }
+        .card-icon { font-size: 2.5rem; margin-bottom: 20px; color: var(--neon-green); text-shadow: 0 0 10px var(--neon-green); }
+        .contact-form { max-width: 700px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            background: rgba(13, 17, 23, 1);
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--neon-cyan); box-shadow: 0 0 10px var(--neon-cyan); }
+        .btn {
+            padding: 15px 30px;
+            background: transparent;
+            border: 2px solid var(--neon-cyan);
+            color: var(--neon-cyan);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+            transition: color 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        .btn:hover { color: var(--dark-bg); box-shadow: 0 0 20px var(--neon-cyan); }
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--neon-cyan);
+            z-index: -1;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease-in-out;
+        }
+        .btn:hover::before { transform: scaleX(1); }
+        footer { padding: 40px 0; text-align: center; }
+        .social-links { margin-top: 40px; margin-bottom: 20px; display: flex; justify-content: center; gap: 25px; }
+        .social-links a { color: var(--text-color); font-size: 2rem; transition: all 0.3s; }
+        .social-links a:hover { color: var(--neon-magenta); text-shadow: 0 0 10px var(--neon-magenta); }
+        @media (max-width: 992px) {
+            .hero-content { grid-template-columns: 1fr; text-align: center; }
+            .hero-image-container { margin-top: 50px; grid-row: 1; }
+            .hero-subtitle { margin: 0 auto 20px; }
+        }
+        @media (max-width: 768px) { .nav-links { display: none; } .section-title { font-size: 2.2rem; } }
+        .chat-icon {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: var(--neon-magenta);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--dark-bg);
+            font-size: 2rem;
+            cursor: pointer;
+            box-shadow: 0 0 20px var(--neon-magenta), 0 0 40px rgba(255, 0, 255, 0.5);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            z-index: 99999;
+            pointer-events: auto;
+        }
+        .chat-icon:hover { transform: scale(1.1); box-shadow: 0 0 30px var(--neon-magenta), 0 0 60px rgba(255, 0, 255, 0.7); }
+        .chat-window {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 350px;
+            min-width: 300px;
+            max-width: 90vw;
+            height: 450px;
+            min-height: 200px;
+            max-height: 80vh;
+            background: var(--dark-bg);
+            border: 2px solid var(--neon-cyan);
+            box-shadow: 0 0 25px var(--neon-cyan), inset 0 0 15px var(--neon-cyan);
+            z-index: 100000;
+            display: none;
+            flex-direction: column;
+            border-radius: 10px;
+            overflow: auto;
+            resize: both;
+            transform: scale(0.8);
+            opacity: 0;
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+            pointer-events: auto;
+        }
+        .chat-window.active { display: flex; transform: scale(1); opacity: 1; }
+        .chat-header {
+            background: rgba(0, 229, 255, 0.1);
+            padding: 15px;
+            border-bottom: 1px solid var(--neon-cyan);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 5px var(--neon-cyan);
+        }
+        .chat-window.expanded {
+            width: 60vw;
+            height: 70vh;
+        }
+        .chat-header-btn {
+            background: none;
+            border: none;
+            color: var(--neon-cyan);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: color 0.2s;
+            margin-left: 10px;
+        }
+        .chat-header-btn:hover {
+            color: var(--neon-green);
+        }
+        .chat-header div {
+            display: flex;
+            align-items: center;
+        }
+        .chat-header .close-btn { background: none; border: none; color: var(--neon-magenta); font-size: 1.5rem; cursor: pointer; transition: color 0.2s; }
+        .chat-header .close-btn:hover { color: var(--neon-green); }
+        .chat-body { padding: 15px; flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; word-wrap: break-word; }
+        .chat-message { background: rgba(13, 17, 23, 0.7); padding: 10px; border-radius: 8px; font-size: 0.9rem; border: 1px solid rgba(66, 133, 244, 0.1); }
+        .chat-message.self { background: rgba(0, 229, 255, 0.15); align-self: flex-end; text-align: right; border-color: var(--neon-cyan); }
+        .chat-message.other { background: rgba(255, 0, 255, 0.15); align-self: flex-start; text-align: left; border-color: var(--neon-magenta); }
+        .typing-indicator {
+            background: rgba(255, 0, 255, 0.15);
+            align-self: flex-start;
+            text-align: left;
+            border-color: var(--neon-magenta);
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .typing-indicator span {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: var(--neon-magenta);
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+        .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+        .chat-message .username { font-weight: 700; color: var(--neon-green); margin-bottom: 5px; display: block; }
+        .chat-input-area { display: flex; padding: 15px; border-top: 1px solid var(--neon-cyan); gap: 5px; }
+        .chat-input-area input {
+            flex-grow: 1;
+            background: rgba(13, 17, 23, 1);
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            border-radius: 5px;
+        }
+        .chat-input-area input:focus { outline: none; border-color: var(--neon-cyan); box-shadow: 0 0 8px var(--neon-cyan); }
+        .chat-input-area .btn { padding: 10px 15px; font-size: 0.9rem; border-radius: 5px; flex-shrink: 0; white-space: nowrap; }
+        .active-users-display { font-size: 0.8rem; color: var(--neon-green); text-align: center; padding-bottom: 10px; text-shadow: 0 0 3px var(--neon-green); }
+        .brainstorm-sub-section { margin-top: 80px; text-align: center; }
+        .brainstorm-sub-section .brainstorm-content {
+            max-width: 700px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .brainstorm-sub-section .brainstorm-content:hover { transform: translateY(-10px); box-shadow: 0 0 20px var(--neon-cyan); border-color: var(--neon-cyan); }
+        .brainstorm-sub-section .brainstorm-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.1), transparent);
+            transition: left 0.6s;
+        }
+        .brainstorm-sub-section .brainstorm-content:hover::before { left: 100%; }
+        .brainstorm-sub-section .form-group textarea {
+            width: 100%;
+            background: rgba(13, 17, 23, 1);
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        .brainstorm-sub-section .form-group textarea:focus { outline: none; border-color: var(--neon-cyan); box-shadow: 0 0 10px var(--neon-cyan); }
+        .brainstorm-sub-section .btn { width: auto; align-self: center; }
+        .brainstorm-output {
+            background: rgba(0, 229, 255, 0.05);
+            border: 1px dashed var(--neon-green);
+            padding: 15px;
+            min-height: 80px;
+            font-size: 0.9rem;
+            color: var(--neon-green);
+            text-shadow: 0 0 3px var(--neon-green);
+            overflow-y: auto;
+            border-radius: 5px;
+            word-wrap: break-word;
+            text-align: left;
+        }
+        .brainstorm-output.loading { text-align: center; font-style: italic; color: rgba(57, 255, 20, 0.6); }
+        #usernamePrompt {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            height: 100%;
+            padding: 20px;
+            text-align: center;
+            background: var(--dark-bg);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 10;
+            border-radius: 10px;
+        }
+        #usernamePrompt.hidden { display: none; }
+        #usernamePrompt input {
+            width: 80%;
+            padding: 10px;
+            background: rgba(13, 17, 23, 1);
+            border: 1px solid var(--neon-cyan);
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1rem;
+            border-radius: 5px;
+            text-align: center;
+        }
+        #usernamePrompt button { padding: 10px 20px; font-size: 1rem; border-radius: 5px; }
+        .news-icon {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 60px;
+            height: 60px;
+            background: var(--neon-green);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--dark-bg);
+            font-size: 2rem;
+            cursor: pointer;
+            box-shadow: 0 0 20px var(--neon-green), 0 0 40px rgba(57, 255, 20, 0.5);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            z-index: 99999;
+            pointer-events: auto;
+        }
+        .news-icon:hover { transform: scale(1.1); box-shadow: 0 0 30px var(--neon-green), 0 0 60px rgba(57, 255, 20, 0.7); }
+        .news-window {
+            position: fixed;
+            bottom: 100px;
+            left: 30px;
+            width: 350px;
+            height: 450px;
+            background: var(--dark-bg);
+            border: 2px solid var(--neon-green);
+            box-shadow: 0 0 25px var(--neon-green), inset 0 0 15px var(--neon-green);
+            z-index: 100000;
+            display: none;
+            flex-direction: column;
+            border-radius: 10px;
+            overflow: hidden;
+            transform: scale(0.8);
+            opacity: 0;
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+            pointer-events: auto;
+        }
+        .news-window.active { display: flex; transform: scale(1); opacity: 1; }
+        .news-header {
+            background: rgba(57, 255, 20, 0.1);
+            padding: 15px;
+            border-bottom: 1px solid var(--neon-green);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-green);
+            text-shadow: 0 0 5px var(--neon-green);
+        }
+        .news-header .close-btn { background: none; border: none; color: var(--neon-magenta); font-size: 1.5rem; cursor: pointer; transition: color 0.2s; }
+        .news-header .close-btn:hover { color: var(--neon-cyan); }
+        .news-body { padding: 15px; flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
+        .news-item { background: rgba(13, 17, 23, 0.7); padding: 12px; border-radius: 8px; border: 1px solid rgba(57, 255, 20, 0.2); transition: background 0.2s, border-color 0.2s; }
+        .news-item:hover { background: rgba(13, 17, 23, 0.9); border-color: var(--neon-green); box-shadow: 0 0 10px rgba(57, 255, 20, 0.3); }
+        .news-item h4 { font-family: 'Orbitron', sans-serif; font-size: 1.1rem; color: var(--neon-cyan); margin-bottom: 5px; text-shadow: 0 0 3px var(--neon-cyan); }
+        .news-item p { font-size: 0.85rem; color: var(--text-color); margin-bottom: 10px; line-height: 1.4; }
+        .news-item a { color: var(--neon-magenta); text-decoration: none; font-size: 0.8rem; font-weight: 700; transition: color 0.2s; }
+        .news-item a:hover { color: var(--neon-cyan); text-decoration: underline; }
+        .news-loading { text-align: center; color: var(--neon-green); font-style: italic; padding: 20px; }
+    </style>
+</head>
+<body>
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+    <canvas id="matrix-bg"></canvas>
+    <div class="scanlines"></div>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo interactive-hover">MI$TA</div>
+                <div class="nav-links">
+                    <a href="#about" class="interactive-hover">Сигнал</a>
+                    <a href="#skills" class="interactive-hover">Протоколи</a>
+                    <a href="#projects" class="interactive-hover">Артефакти</a>
+                    <a href="#contact" class="interactive-hover">Зв'язок</a>
+                    <a href="#skills" class="interactive-hover">Мозковий Штурм</a> 
+                </div>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <section class="hero" id="home">
+            <div class="container hero-content">
+                <div class="hero-text">
+                    <h1 class="glitch-layers">
+                        MI$TARENKO
+                        <span class="layer-1" aria-hidden="true">MI$TARENKO</span>
+                        <span class="layer-2" aria-hidden="true">MI$TARENKO</span>
+                    </h1>
+                    <p class="hero-subtitle">Цифрова Відьма & Web3 Архітектор</p>
+                    <p style="font-size: 1.5rem; text-shadow: 0 0 5px var(--neon-green), 0 0 10px var(--neon-green); margin-bottom: 1rem;">Трансформую код в цифрову магію. Там, де кіберпанк-естетика зустрічається з передовими технологіями.</p>
+                    <p style="font-size: 1.1rem; line-height: 1.6;">Напишу програму, що зламає реальність. Створю код, що стане твоїм прокляттям або благословенням. Знайду зв'язок з минулим і напророчу майбутнє. Мої послуги не для слабких духом.</p>
+                </div>
+                <div class="hero-image-container">
+                    <img src="377904414403616772.png" alt="Портрет Марії Містаренко" class="hero-image">
+                </div>
+            </div>
+        </section>
+        <section id="about">
+            <div class="container">
+                <h2 class="section-title">Вхідний Сигнал</h2>
+                <p style="text-align: center; max-width: 800px; margin: 0 auto; font-size: 1.1rem; line-height: 1.8;">
+                    Я — цифровий провокатор з України, що спеціалізується на перетині AI, Web3 та кіберпанк-естетики. Мій шлях почався в Харкові, де я навчилася кодувати під симфонію сирен, що викувало мій унікальний погляд на технології та реальність. Я не просто створюю сайти — я створюю цифрові закляття, що гіпнотизують алгоритми та захоплюють душі.
+                </p>
+            </div>
+        </section>
+        <section id="skills">
+            <div class="container">
+                <h2 class="section-title">Активні Протоколи</h2>
+                <div class="grid">
+                    <div class="card interactive-hover"><div class="card-icon"></div><h3 class="card-title">AI Нейро-Бьюті</h3><p>Поєднання штучного інтелекту з естетичною досконалістю, створення провокаційних цифрових дослідів.</p></div>
+                    <div class="card interactive-hover"><h3 class="card-title">Web3 Алхімія</h3><p>Побудова децентралізованих систем, експерименти з блокчейн-технологіями та підрив застарілих концепцій.</p></div>
+                    <div class="card interactive-hover"><h3 class="card-title">Кіберпанк-Розробка</h3><p>Створення неонових, футуристичних інтерфейсів з передовими анімаціями та інтерактивними елементами.</p></div>
+                </div>
+                <div class="brainstorm-sub-section">
+                    <h3 class="chat-section-title">Мозковий Штурм</h3>
+                    <div class="brainstorm-content interactive-hover">
+                        <p style="font-size: 1.1rem; margin-bottom: 20px;">Маєте ідею? Давайте перетворимо її на кіберпанк-шедевр. Введіть концепцію нижче.</p>
+                        <div class="form-group"><textarea id="brainstormInput" rows="5" placeholder="Введіть концепцію тут..." required class="interactive-hover"></textarea></div>
+                        <button id="generateIdeaBtn" class="btn interactive-hover">✨ Згенерувати Ідею Проєкту</button>
+                        <div class="brainstorm-output" id="brainstormOutput">Ваша кіберпанк-ідея з'явиться тут...</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="projects">
+            <div class="container">
+                <h2 class="section-title">Цифрові Артефакти</h2>
+                <div class="grid">
+                    <div class="card interactive-hover"><h3 class="card-title">AI Агент-Портфоліо</h3><p>Персональний сайт з чатом в реальному часі, неоновими анімаціями та інтерактивними елементами.</p></div>
+                    <div class="card interactive-hover"><h3 class="card-title">Web3 DApp Інтерфейс</h3><p>Децентралізований додаток з дизайном у стилі гласморфізм та інтеграцією з блокчейном.</p></div>
+                    <div class="card interactive-hover"><h3 class="card-title">Візуалізатор Нейромереж</h3><p>Інтерактивна візуалізація AI-мереж з обробкою даних у реальному часі та кіберпанк-естетикою.</p></div>
+                </div>
+            </div>
+        </section>
+        <section id="contact">
+            <div class="container">
+                <h2 class="section-title">Канал Зв'язку</h2>
+                <form class="contact-form">
+                    <div class="form-group"><input type="text" placeholder="Ваш позивний" required class="interactive-hover"></div>
+                    <div class="form-group"><input type="email" placeholder="Ваша частота (email)" required class="interactive-hover"></div>
+                    <div class="form-group"><textarea rows="5" placeholder="Текст повідомлення..." required class="interactive-hover"></textarea></div>
+                    <button type="submit" class="btn interactive-hover">Надіслати Сигнал</button>
+                </form>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="container">
+            <div class="social-links">
+                <a href="https://www.youtube.com/channel/UCqcJJH8RK5Yqgf2OyEvwFwg" target="_blank" class="interactive-hover" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                <a href="https://www.facebook.com/masha.mistarenko.mista?locale=uk_UA" target="_blank" class="interactive-hover" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/mista101999/" target="_blank" class="interactive-hover" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://t.me/your_telegram_channel" target="_blank" class="interactive-hover" aria-label="Telegram"><i class="fab fa-telegram-plane"></i></a>
+            </div>
+            <p>&copy; 2024 Mariya Mistarenko. Всі права захищені. Створено за допомогою цифрової магії.</p>
+        </div>
+    </footer>
+    <div class="chat-icon interactive-hover" id="chatIcon"><i class="fas fa-comment-dots"></i></div>
+    <div class="chat-window" id="chatWindow">
+        <div class="chat-header">
+            <span>Прямий звязок з Кодеркою</span>
+            <button class="close-btn" id="closeChatBtn"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="active-users-display" id="activeUsersCount">Активних користувачів: 0</div>
+        <div id="usernamePrompt">
+            <h3 class="chat-section-title">Введіть ваш позивний</h3>
+            <p style="font-size: 0.9rem; color: var(--text-color);">Це ім'я буде відображатися в чаті.</p>
+            <input type="text" id="usernameInput" placeholder="Ваш позивний" required>
+            <button id="saveUsernameBtn" class="btn">Приєднатися до мережі</button>
+        </div>
+        <div class="chat-body" id="chatBody" style="display: none;"></div>
+        <div class="chat-input-area" style="display: none;">
+            <input type="text" id="chatInput" placeholder="Введіть повідомлення..." class="interactive-hover">
+            <button id="sendChatBtn" class="btn interactive-hover">Надіслати</button>
+        </div>
+    </div>
+    <div class="news-icon interactive-hover" id="newsIcon"><i class="fas fa-newspaper"></i></div>
+    <div class="news-window" id="newsWindow">
+        <div class="news-header">
+            <span>Кібер-Новини</span>
+            <button class="close-btn" id="closeNewsBtn"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="news-body" id="newsBody">
+            <div class="news-loading" id="newsLoading">Завантаження новин...</div>
+        </div>
+    </div>
+
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm?v=1.2"></script>
+    <script src="script.js?v=1752979200000"></script>
+    </script>
+    <!-- Mista's digital signature for GitHub Pages refresh -->
+</body>
+</html>

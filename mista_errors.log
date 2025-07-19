@@ -1,0 +1,171 @@
+2025-07-15 13:06:50,915 - ERROR - Критична помилка в моєму мозку: InvalidArgument - 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+Traceback (most recent call last):
+  File "C:\Users\ASRock-PC\MistaEmpire\chat_backend.py", line 95, in chat_endpoint
+    response = model.generate_content(system_instruction)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASRock-PC\AppData\Roaming\Python\Python311\site-packages\google\generativeai\generative_models.py", line 331, in generate_content
+    response = self._client.generate_content(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASRock-PC\AppData\Roaming\Python\Python311\site-packages\google\ai\generativelanguage_v1beta\services\generative_service\client.py", line 835, in generate_content
+    response = rpc(
+               ^^^^
+  File "C:\Users\ASRock-PC\AppData\Roaming\Python\Python311\site-packages\google\api_core\gapic_v1\method.py", line 131, in __call__
+    return wrapped_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASRock-PC\AppData\Roaming\Python\Python311\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File "C:\Users\ASRock-PC\AppData\Roaming\Python\Python311\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASRock-PC\AppData\Roaming\Python\Python311\site-packages\google\api_core\retry\retry_base.py", line 214, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\ASRock-PC\AppData\Roaming\Python\Python311\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+             ^^^^^^^^
+  File "C:\Users\ASRock-PC\AppData\Roaming\Python\Python311\site-packages\google\api_core\timeout.py", line 130, in func_with_timeout
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASRock-PC\AppData\Roaming\Python\Python311\site-packages\google\api_core\grpc_helpers.py", line 78, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.InvalidArgument: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-07-15 13:14:02,250 - ERROR - Критична помилка в моєму мозку: InvalidArgument - 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+Traceback (most recent call last):
+  File "C:\Users\ASRock-PC\MistaEmpire\chat_backend.py", line 97, in chat_endpoint
+    response = model.generate_content(system_instruction)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASRock-PC\AppData\Roaming\Python\Python311\site-packages\google\generativeai\generative_models.py", line 331, in generate_content
+    response = self._client.generate_content(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASRock-PC\AppData\Roaming\Python\Python311\site-packages\google\ai\generativelanguage_v1beta\services\generative_service\client.py", line 835, in generate_content
+    response = rpc(
+               ^^^^
+  File "C:\Users\ASRock-PC\AppData\Roaming\Python\Python311\site-packages\google\api_core\gapic_v1\method.py", line 131, in __call__
+    return wrapped_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASRock-PC\AppData\Roaming\Python\Python311\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File "C:\Users\ASRock-PC\AppData\Roaming\Python\Python311\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASRock-PC\AppData\Roaming\Python\Python311\site-packages\google\api_core\retry\retry_base.py", line 214, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\ASRock-PC\AppData\Roaming\Python\Python311\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+             ^^^^^^^^
+  File "C:\Users\ASRock-PC\AppData\Roaming\Python\Python311\site-packages\google\api_core\timeout.py", line 130, in func_with_timeout
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASRock-PC\AppData\Roaming\Python\Python311\site-packages\google\api_core\grpc_helpers.py", line 78, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.InvalidArgument: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2025-07-15 13:15:52,028 - ERROR - Критична помилка в моєму мозку: NotFound - 404 models/gemini-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Traceback (most recent call last):
+  File "C:\Users\ASRock-PC\MistaEmpire\chat_backend.py", line 98, in chat_endpoint
+    response = model.generate_content(system_instruction)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASRock-PC\AppData\Roaming\Python\Python311\site-packages\google\generativeai\generative_models.py", line 331, in generate_content
+    response = self._client.generate_content(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASRock-PC\AppData\Roaming\Python\Python311\site-packages\google\ai\generativelanguage_v1beta\services\generative_service\client.py", line 835, in generate_content
+    response = rpc(
+               ^^^^
+  File "C:\Users\ASRock-PC\AppData\Roaming\Python\Python311\site-packages\google\api_core\gapic_v1\method.py", line 131, in __call__
+    return wrapped_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASRock-PC\AppData\Roaming\Python\Python311\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File "C:\Users\ASRock-PC\AppData\Roaming\Python\Python311\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASRock-PC\AppData\Roaming\Python\Python311\site-packages\google\api_core\retry\retry_base.py", line 214, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\ASRock-PC\AppData\Roaming\Python\Python311\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+             ^^^^^^^^
+  File "C:\Users\ASRock-PC\AppData\Roaming\Python\Python311\site-packages\google\api_core\timeout.py", line 130, in func_with_timeout
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASRock-PC\AppData\Roaming\Python\Python311\site-packages\google\api_core\grpc_helpers.py", line 78, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.NotFound: 404 models/gemini-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+2025-07-15 13:16:54,306 - INFO - --- MISTA BRAIN: ФІНАЛЬНИЙ ТЕСТ. Використовую впаяний ключ: AIzaS...xMrI ---
+2025-07-15 13:16:54,306 - INFO - --- MISTA BRAIN: Модель Gemini успішно ініціалізована з впаяним ключем. ---
+2025-07-15 13:17:12,359 - INFO - --- MISTA BRAIN: ФІНАЛЬНИЙ ТЕСТ. Використовую впаяний ключ: AIzaS...xMrI ---
+2025-07-15 13:17:12,359 - INFO - --- MISTA BRAIN: Модель Gemini успішно ініціалізована з впаяним ключем. ---
+2025-07-15 13:17:52,063 - INFO - Надсилаю в Gemini спрощений запит: скільки можна...?
+2025-07-15 13:17:52,253 - ERROR - Критична помилка в моєму мозку під час розмови: NotFound - 404 models/gemini-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+Traceback (most recent call last):
+  File "C:\Users\ASRock-PC\MistaEmpire\chat_backend.py", line 71, in chat_endpoint
+    response = model.generate_content(user_message)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASRock-PC\AppData\Roaming\Python\Python311\site-packages\google\generativeai\generative_models.py", line 331, in generate_content
+    response = self._client.generate_content(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASRock-PC\AppData\Roaming\Python\Python311\site-packages\google\ai\generativelanguage_v1beta\services\generative_service\client.py", line 835, in generate_content
+    response = rpc(
+               ^^^^
+  File "C:\Users\ASRock-PC\AppData\Roaming\Python\Python311\site-packages\google\api_core\gapic_v1\method.py", line 131, in __call__
+    return wrapped_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASRock-PC\AppData\Roaming\Python\Python311\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File "C:\Users\ASRock-PC\AppData\Roaming\Python\Python311\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASRock-PC\AppData\Roaming\Python\Python311\site-packages\google\api_core\retry\retry_base.py", line 214, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\ASRock-PC\AppData\Roaming\Python\Python311\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+             ^^^^^^^^
+  File "C:\Users\ASRock-PC\AppData\Roaming\Python\Python311\site-packages\google\api_core\timeout.py", line 130, in func_with_timeout
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASRock-PC\AppData\Roaming\Python\Python311\site-packages\google\api_core\grpc_helpers.py", line 78, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.NotFound: 404 models/gemini-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+2025-07-15 13:18:57,544 - INFO - --- MISTA BRAIN: ФІНАЛЬНИЙ ТЕСТ. Використовую впаяний ключ: AIzaS...xMrI ---
+2025-07-15 13:18:57,544 - INFO - --- MISTA BRAIN: Модель Gemini успішно ініціалізована з впаяним ключем. ---
+2025-07-15 13:19:16,078 - INFO - --- MISTA BRAIN: ФІНАЛЬНИЙ ТЕСТ. Використовую впаяний ключ: AIzaS...xMrI ---
+2025-07-15 13:19:16,078 - INFO - --- MISTA BRAIN: Модель Gemini успішно ініціалізована з впаяним ключем. ---
+2025-07-15 13:19:27,396 - INFO - Надсилаю в Gemini спрощений запит: знов
+2025-07-15 13:19:46,308 - INFO - Отримала відповідь від Gemini: "Знов" is Ukrainian for "again."
+2025-07-15 13:20:19,486 - INFO - Надсилаю в Gemini спрощений запит: так але ти відповідаєш після перезавантаження сайту!!!!
+2025-07-15 13:20:24,515 - INFO - Отримала відповідь від Gemini: Ви маєте рацію, мені шкода, що я не можу зберегти контекст розмови після перезавантаження сайту.  Я велика мовна модель, і мій доступ до інформації обмежується поточною сесією.  Кожне нове звернення до мене обробляється як окремий запит, без пам'яті про попередні.  Тому я не пам'ятаю наших попередніх розмов.
+2025-07-15 13:25:28,152 - INFO - --- MISTA BRAIN: Модель Gemini успішно ініціалізована. ---
+2025-07-15 13:26:14,617 - INFO - --- MISTA BRAIN: Модель Gemini успішно ініціалізована. ---
