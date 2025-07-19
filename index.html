@@ -324,15 +324,15 @@
         }
         @keyframes flash-glow {
             0% {
-                filter: invert(58%) sepia(68%) saturate(5807%) hue-rotate(286deg) brightness(1.5) contrast(104%);
+                filter: invert(58%) sepia(68%) saturate(5807%) hue-rotate(286deg) brightness(1.5) contrast(104%) drop-shadow(0 0 3px var(--neon-magenta));
                 transform: translateY(0px) rotate(0deg);
             }
             50% {
-                filter: invert(58%) sepia(68%) saturate(5807%) hue-rotate(286deg) brightness(2.5) contrast(104%);
+                filter: invert(58%) sepia(68%) saturate(5807%) hue-rotate(286deg) brightness(2.5) contrast(104%) drop-shadow(0 0 8px var(--neon-magenta)) drop-shadow(0 0 15px rgba(255, 0, 255, 0.7));
                 transform: translateY(-3px) rotate(2deg);
             }
             100% {
-                filter: invert(58%) sepia(68%) saturate(5807%) hue-rotate(286deg) brightness(1.5) contrast(104%);
+                filter: invert(58%) sepia(68%) saturate(5807%) hue-rotate(286deg) brightness(1.5) contrast(104%) drop-shadow(0 0 3px var(--neon-magenta));
                 transform: translateY(0px) rotate(0deg);
             }
         }

@@ -1,14 +1,5 @@
-Feat: Implement chat/news improvements and fix icon glow
+Fix: Refine icon glow animation for precision
 
-This commit introduces several enhancements based on user feedback:
+This commit further refines the CSS animation for the typing indicator icon. The previous attempts did not produce the desired effect of a precise contour glow.
 
-1.  **Icon Glow Animation:** The CSS keyframe animation for the typing indicator icon in `index.html` has been refined. It now uses a `drop-shadow` filter with no offset to create a more precise glow effect that emanates directly from the non-transparent parts of the icon, fixing the "square glow" issue.
-
-2.  **News Caching and Countdown:** The news fetching logic in `script.js` has been completely overhauled.
-    *   News articles are now cached in `localStorage` for 10 hours.
-    *   A countdown timer is displayed in the news window header, showing the user when the next update will be available.
-    *   The `index.html` was updated to include a container for this timer.
-
-3.  **Chat Auto-Cleanup:** The backend script `chat_backend.py` now includes an auto-cleanup mechanism.
-    *   A new function, `clear_old_messages`, deletes messages older than 24 hours from the Supabase database.
-    *   This function is triggered every time a new message is posted to the `/chat` endpoint, ensuring regular cleanup of the chat history.
+This update modifies the `flash-glow` keyframe animation in `index.html` to use a multi-layered `drop-shadow` effect. This approach creates a softer, more accurate glow that should adhere more closely to the icon's contours rather than its bounding box, finally achieving the intended visual effect.
