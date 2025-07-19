@@ -1,1 +1,1 @@
-\"Feat: Extract JavaScript to script.js and implement cache-busting\" 
+Fix: Remove redundant Supabase import and extra script tag from index.html
