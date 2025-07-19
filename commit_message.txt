@@ -1,1 +1,8 @@
-Feat: Refine typing indicator icon animation and remove frame
+Fix: Refine typing indicator glow animation
+
+The previous implementation used a CSS `drop-shadow` filter, which created an undesirable glow effect around the icon's bounding box rather than making the icon itself glow.
+
+This commit refactors the implementation by:
+1. Removing the inline filter style from the `<img>` in `script.js`.
+2. Centralizing all styling for the indicator icon in `index.html`.
+3. Updating the `flash-glow` keyframe animation to use `filter: brightness()` instead of `drop-shadow`, which makes the icon itself pulse with light as intended.

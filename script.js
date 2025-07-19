@@ -137,7 +137,7 @@
                 // Show typing indicator
                 const typingIndicatorDiv = document.createElement('div');
                 typingIndicatorDiv.classList.add('typing-indicator');
-                typingIndicatorDiv.innerHTML = '<img src="16941.png?v=1.1" alt="Typing..." style="width: 30px; height: 30px; filter: invert(58%) sepia(68%) saturate(5807%) hue-rotate(286deg) brightness(102%) contrast(104%);">';
+                typingIndicatorDiv.innerHTML = '<img src="16941.png?v=1.1" alt="Typing...">';
                 chatBody.appendChild(typingIndicatorDiv);
                 chatBody.scrollTop = chatBody.scrollHeight;
 

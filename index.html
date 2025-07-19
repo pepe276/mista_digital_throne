@@ -317,21 +317,22 @@
             gap: 5px;
         }
         .typing-indicator img {
+            width: 30px;
+            height: 30px;
             animation: flash-glow 1.5s infinite alternate;
-            /* Додаємо легкий рух */
             transform-origin: center;
         }
         @keyframes flash-glow {
-            0% { 
-                filter: brightness(1) drop-shadow(0 0 5px var(--neon-magenta)); 
+            0% {
+                filter: invert(58%) sepia(68%) saturate(5807%) hue-rotate(286deg) brightness(1.5) contrast(104%);
                 transform: translateY(0px) rotate(0deg);
             }
-            50% { 
-                filter: brightness(2) drop-shadow(0 0 15px var(--neon-magenta)) drop-shadow(0 0 30px var(--neon-magenta)); 
-                transform: translateY(-3px) rotate(2deg); /* Легке зміщення та поворот */
+            50% {
+                filter: invert(58%) sepia(68%) saturate(5807%) hue-rotate(286deg) brightness(2.5) contrast(104%);
+                transform: translateY(-3px) rotate(2deg);
             }
-            100% { 
-                filter: brightness(1) drop-shadow(0 0 5px var(--neon-magenta)); 
+            100% {
+                filter: invert(58%) sepia(68%) saturate(5807%) hue-rotate(286deg) brightness(1.5) contrast(104%);
                 transform: translateY(0px) rotate(0deg);
             }
         }
