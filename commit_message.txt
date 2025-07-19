@@ -1,1 +1,1 @@
-Feat: Add flashing glow animation to typing indicator icon
+Feat: Refine typing indicator icon animation and remove frame

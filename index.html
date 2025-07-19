@@ -305,12 +305,12 @@
         .chat-message.self { background: rgba(0, 229, 255, 0.15); align-self: flex-end; text-align: right; border-color: var(--neon-cyan); }
         .chat-message.other { background: rgba(255, 0, 255, 0.15); align-self: flex-start; text-align: left; border-color: var(--neon-magenta); }
         .typing-indicator {
-            background: rgba(255, 0, 255, 0.15);
+            background: transparent; /* Видаляємо фон */
+            border: none; /* Видаляємо рамку */
+            box-shadow: none; /* Видаляємо тінь */
+            padding: 0; /* Видаляємо відступи */
             align-self: flex-start;
             text-align: left;
-            border-color: var(--neon-magenta);
-            padding: 10px;
-            border-radius: 8px;
             font-size: 0.9rem;
             display: flex;
             align-items: center;
@@ -318,11 +318,22 @@
         }
         .typing-indicator img {
             animation: flash-glow 1.5s infinite alternate;
+            /* Додаємо легкий рух */
+            transform-origin: center;
         }
         @keyframes flash-glow {
-            0% { filter: brightness(1) drop-shadow(0 0 5px var(--neon-magenta)); }
-            50% { filter: brightness(2) drop-shadow(0 0 15px var(--neon-magenta)) drop-shadow(0 0 30px var(--neon-magenta)); }
-            100% { filter: brightness(1) drop-shadow(0 0 5px var(--neon-magenta)); }
+            0% { 
+                filter: brightness(1) drop-shadow(0 0 5px var(--neon-magenta)); 
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% { 
+                filter: brightness(2) drop-shadow(0 0 15px var(--neon-magenta)) drop-shadow(0 0 30px var(--neon-magenta)); 
+                transform: translateY(-3px) rotate(2deg); /* Легке зміщення та поворот */
+            }
+            100% { 
+                filter: brightness(1) drop-shadow(0 0 5px var(--neon-magenta)); 
+                transform: translateY(0px) rotate(0deg);
+            }
         }
         .typing-indicator span {
             display: inline-block;
