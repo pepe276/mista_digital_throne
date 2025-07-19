@@ -1,5 +1,11 @@
-CI: Add GitHub Actions workflow for Pages deployment
+Feat: Finalize CI/CD pipeline and add documentation
 
-The previous classic GitHub Pages deployment method proved to be unreliable, failing to trigger on every push.
+This commit completes the automation and documentation of the project.
 
-This commit introduces a dedicated GitHub Actions workflow (`.github/workflows/deploy.yml`) to take explicit control over the build and deployment process. This will ensure consistent and reliable deployments to GitHub Pages whenever changes are pushed to the `master` branch.
+1.  **Automate Render Deployments:** The `render.yaml` file has been updated with `autoDeploy: true` to ensure the backend service is automatically updated on every push to the `master` branch.
+
+2.  **Refactor Backend:** The manual chat cleanup trigger has been removed from the `/chat` endpoint in `chat_backend.py`. This logic is now handled reliably by the cron job defined in `render.yaml`, preventing redundancy.
+
+3.  **Add Project README:** A comprehensive `README.md` file has been created. It details the project's architecture, the technologies and services used (GitHub Pages, Render, Supabase, Gemini), and the automated deployment workflow. This serves as the central documentation for the project.
+
+This commit marks the transition to a fully automated and well-documented system.

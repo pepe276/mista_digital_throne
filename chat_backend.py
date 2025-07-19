@@ -10,7 +10,6 @@ from pydantic import BaseModel
 from starlette.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from supabase import create_client, Client
-from datetime import datetime, timedelta
 
 # --- Basic Configuration ---
 logging.basicConfig(

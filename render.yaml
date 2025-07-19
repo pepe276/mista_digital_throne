@@ -3,6 +3,7 @@ services:
   - type: web
     name: mista-backend
     env: python
+    autoDeploy: true
     buildCommand: "pip install -r requirements.txt"
     startCommand: "uvicorn chat_backend:app --host 0.0.0.0 --port $PORT"
     envVars:
