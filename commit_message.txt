@@ -1,5 +1,5 @@
-Fix: Refine icon glow animation for precision
+CI: Add GitHub Actions workflow for Pages deployment
 
-This commit further refines the CSS animation for the typing indicator icon. The previous attempts did not produce the desired effect of a precise contour glow.
+The previous classic GitHub Pages deployment method proved to be unreliable, failing to trigger on every push.
 
-This update modifies the `flash-glow` keyframe animation in `index.html` to use a multi-layered `drop-shadow` effect. This approach creates a softer, more accurate glow that should adhere more closely to the icon's contours rather than its bounding box, finally achieving the intended visual effect.
+This commit introduces a dedicated GitHub Actions workflow (`.github/workflows/deploy.yml`) to take explicit control over the build and deployment process. This will ensure consistent and reliable deployments to GitHub Pages whenever changes are pushed to the `master` branch.
