@@ -10,6 +10,7 @@ from pydantic import BaseModel
 from starlette.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from supabase import create_client, Client
+from datetime import datetime, timedelta
 
 # --- Basic Configuration ---
 logging.basicConfig(
@@ -82,6 +83,26 @@ class ChatMessage(BaseModel):
     user_id: str
     username: str
 
+# --- Helper Functions ---
+async def clear_old_messages():
+    """Deletes messages from Supabase that are older than 24 hours."""
+    if not supabase:
+        logging.warning("Supabase client not available, skipping message cleanup.")
+        return
+    try:
+        # Calculate the timestamp for 24 hours ago
+        time_threshold = datetime.utcnow() - timedelta(hours=24)
+        
+        # Execute the delete query
+        response = supabase.table('messages').delete().lt('created_at', time_threshold.isoformat()).execute()
+        
+        if response.data:
+            logging.info(f"Successfully cleared {len(response.data)} old messages.")
+        # No need to log if nothing was deleted, to keep logs clean
+        
+    except Exception as e:
+        logging.error(f"Error during old message cleanup: {e}", exc_info=True)
+
 # --- Endpoints ---
 @app.get("/", response_class=FileResponse)
 async def read_index():
@@ -90,6 +111,12 @@ async def read_index():
 
 @app.post("/chat")
 async def chat_endpoint(chat_message: ChatMessage):
+    # Trigger cleanup task, but don't wait for it to complete
+    try:
+        await clear_old_messages()
+    except Exception as e:
+        logging.error(f"Failed to trigger message cleanup: {e}")
+
     if not chat_model:
         raise HTTPException(status_code=503, detail="Мій чат-мозок не ініціалізовано. Перевірте ключі API.")
     if not supabase:
@@ -169,6 +196,9 @@ async def clear_chat_endpoint():
     except Exception as e:
         logging.error(f"Error clearing chat history: {e}", exc_info=True)
         raise HTTPException(status_code=500, detail="Не вдалося очистити історію чату.")
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="127.0.0.1", port=8000)
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000)

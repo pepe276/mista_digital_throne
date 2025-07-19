@@ -205,25 +205,12 @@
             const closeNewsBtn = document.getElementById('closeNewsBtn');
             const newsBody = document.getElementById('newsBody');
             const newsLoading = document.getElementById('newsLoading');
-
-            async function fetchNews() {
-                if(newsLoading) newsLoading.style.display = 'block';
-                if(newsBody) newsBody.innerHTML = '';
-                try {
-                    const response = await fetch('https://mista-backend.onrender.com/news', { method: 'POST' });
-                    if (!response.ok) throw new Error('Network response was not ok.');
-                    const newsItems = await response.json();
-                    if(newsLoading) newsLoading.style.display = 'none';
-                    displayNews(newsItems);
-                } catch (error) {
-                    console.error("Failed to fetch news:", error);
-                    if(newsLoading) newsLoading.style.display = 'none';
-                    if(newsBody) newsBody.innerHTML = '<p class="news-loading">Помилка завантаження новин.</p>';
-                }
-            }
+            const newsCountdown = document.getElementById('newsCountdown');
+            const NEWS_REFRESH_INTERVAL = 10 * 60 * 60 * 1000; // 10 hours in ms
+            let newsUpdateTimer;
 
             function displayNews(newsItems) {
-                if(!newsBody) return;
+                if (!newsBody) return;
                 newsBody.innerHTML = '';
                 if (!newsItems || newsItems.length === 0) {
                     newsBody.innerHTML = '<p class="news-loading">Наразі немає новин.</p>';
@@ -239,16 +226,81 @@
                     `;
                     newsBody.appendChild(newsItemElement);
                 });
+                localStorage.setItem('mista_news_cache', JSON.stringify(newsItems));
+            }
+
+            function updateNewsView() {
+                const cachedNews = localStorage.getItem('mista_news_cache');
+                const lastFetchTime = parseInt(localStorage.getItem('mista_news_last_fetch'), 10);
+                const now = Date.now();
+
+                if (cachedNews && lastFetchTime && (now - lastFetchTime < NEWS_REFRESH_INTERVAL)) {
+                    console.log('Loading news from cache.');
+                    if(newsLoading) newsLoading.style.display = 'none';
+                    displayNews(JSON.parse(cachedNews));
+                } else {
+                    console.log('Fetching fresh news.');
+                    fetchNews();
+                }
+                startNewsCountdown();
+            }
+            
+            function startNewsCountdown() {
+                if (newsUpdateTimer) clearInterval(newsUpdateTimer);
+
+                newsUpdateTimer = setInterval(() => {
+                    const lastFetchTime = parseInt(localStorage.getItem('mista_news_last_fetch'), 10);
+                    if (!lastFetchTime) {
+                        if(newsCountdown) newsCountdown.textContent = 'Оновлення...';
+                        return;
+                    }
+                    const now = Date.now();
+                    const timeRemaining = (lastFetchTime + NEWS_REFRESH_INTERVAL) - now;
+
+                    if (timeRemaining <= 0) {
+                        if(newsCountdown) newsCountdown.textContent = 'Можна оновити';
+                        clearInterval(newsUpdateTimer);
+                        return;
+                    }
+
+                    const hours = Math.floor(timeRemaining / (1000 * 60 * 60));
+                    const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+                    
+                    if(newsCountdown) newsCountdown.textContent = `Наступне оновлення через: ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                }, 1000);
+            }
+
+            async function fetchNews() {
+                if(newsLoading) newsLoading.style.display = 'block';
+                if(newsBody) newsBody.innerHTML = ''; // Clear previous content
+                try {
+                    const response = await fetch('https://mista-backend.onrender.com/news', { method: 'POST' });
+                    if (!response.ok) throw new Error(`Network response was not ok: ${response.statusText}`);
+                    const newsItems = await response.json();
+                    if(newsLoading) newsLoading.style.display = 'none';
+                    displayNews(newsItems);
+                    localStorage.setItem('mista_news_last_fetch', Date.now().toString());
+                    startNewsCountdown();
+                } catch (error) {
+                    console.error("Failed to fetch news:", error);
+                    if(newsLoading) newsLoading.style.display = 'none';
+                    if(newsBody) newsBody.innerHTML = '<p class="news-loading">Помилка завантаження новин.</p>';
+                }
             }
 
             if(newsIcon) newsIcon.addEventListener('click', () => {
-                if(newsWindow) newsWindow.classList.toggle('active');
-                if (newsWindow && newsWindow.classList.contains('active')) {
-                    fetchNews();
+                const isActive = newsWindow.classList.toggle('active');
+                if (isActive) {
+                    updateNewsView();
+                } else {
+                    if (newsUpdateTimer) clearInterval(newsUpdateTimer);
                 }
             });
+
             if(closeNewsBtn) closeNewsBtn.addEventListener('click', () => {
-                if(newsWindow) newsWindow.classList.remove('active');
+                newsWindow.classList.remove('active');
+                if (newsUpdateTimer) clearInterval(newsUpdateTimer);
             });
 
             // --- BRAINSTORM ---
