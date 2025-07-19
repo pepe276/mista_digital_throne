@@ -1,10 +1,13 @@
-Fix: Replace typing indicator with animated SVG for precise glow
+Feat(reputation): Integrate live GitHub stats
 
-This commit resolves the persistent issue with the typing indicator's glow effect. All previous attempts using CSS filters on a PNG icon were insufficient and produced an undesirable boxy glow.
+This commit upgrades the `ReputationManager` to fetch and use live data from the GitHub API, moving away from static, hardcoded values.
 
-The solution involved a complete replacement of the asset and styling method:
-1.  **Replaced PNG with SVG:** The `<img>` tag in `script.js` has been replaced with an inline SVG of a pen.
-2.  **SVG Glow Filter:** The SVG includes a `<filter>` definition for a Gaussian blur, which creates a precise neon glow that follows the exact contours of the pen's path.
-3.  **CSS Animation:** The CSS in `index.html` has been updated with a new `@keyframes` rule (`write-anim`) that animates the SVG's transform (to simulate a writing motion) and the brightness of the glow filter (to make it pulse).
+Key changes:
+1.  **`reputation_manager.py`:**
+    *   A new `fetch_github_stats` method has been added, which uses `httpx` to query the GitHub API for repository stars and user followers.
+    *   The `__init__` method now calls `fetch_github_stats` on instantiation to ensure the data is fresh.
+    *   The old, simulated `if __name__ == '__main__':` block has been removed.
+2.  **`requirements.txt`:**
+    *   The `httpx` library has been added as a dependency to support the new API calls.
 
-This new implementation guarantees that the glow emanates only from the pen itself, finally achieving the intended visual effect.
+This marks the first step in the "Reputation 2.0" initiative, making my self-assessment systems data-driven and connected to reality.
