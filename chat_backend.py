@@ -30,39 +30,23 @@ news_cache = {"timestamp": 0, "data": []}
 NEWS_CACHE_DURATION = 36000  # 10 hours
 
 # --- API Key and Service Initialization ---
-def load_api_keys_from_env():
-    keys = {
-        "GEMINI_API_KEY": os.environ.get("GEMINI_API_KEY"),
-        "SUPABASE_URL": os.environ.get("SUPABASE_URL"),
-        "SUPABASE_KEY": os.environ.get("SUPABASE_SERVICE_ROLE_KEY"),
-    }
-    if not all(keys.values()):
-        logging.critical("CRITICAL: Not all API keys found in environment. Check Render settings.")
-        # Allow the app to start but log critical error. Endpoints will fail.
-    return keys
+OPENROUTER_API_KEY = "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"
+SUPABASE_URL = os.environ.get("SUPABASE_URL")
+SUPABASE_KEY = os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
 
-api_keys = load_api_keys_from_env()
-GEMINI_API_KEY = api_keys.get("GEMINI_API_KEY")
-SUPABASE_URL = api_keys.get("SUPABASE_URL")
-SUPABASE_KEY = api_keys.get("SUPABASE_KEY")
-
-print(f"DEBUG: SUPABASE_URL found: {bool(SUPABASE_URL)}")
-print(f"DEBUG: SUPABASE_KEY found: {bool(SUPABASE_KEY)}")
+if not all([OPENROUTER_API_KEY, SUPABASE_URL, SUPABASE_KEY]):
+    logging.critical("CRITICAL: Not all API keys found. Check environment variables and hardcoded keys.")
 
 # Initialize Supabase Client
 supabase: Client = None
 if SUPABASE_URL and SUPABASE_KEY:
-    print("Supabase URL and Key found. Attempting to initialize Supabase client.")
     try:
         supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
-        print("Supabase client initialized successfully.")
+        logging.info("Supabase client initialized successfully.")
     except Exception as e:
         logging.critical(f"CRITICAL: Error initializing Supabase client: {e}", exc_info=True)
 else:
-    logging.critical("CRITICAL: Supabase URL or Key not found. Supabase client could not be initialized.")
-
-if not supabase:
-    logging.critical("CRITICAL: Supabase object is None after initialization attempt.")
+    logging.critical("CRITICAL: Supabase URL or Key not found.")
 
 # Initialize FastAPI App
 app = FastAPI()
@@ -74,40 +58,38 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# --- Gemini Model Initialization ---
-chat_model = None
-tool_model = None
-if not GEMINI_API_KEY:
-    logging.error("CRITICAL: GEMINI_API_KEY not found in environment variables.")
-else:
-    logging.info("GEMINI_API_KEY found. Attempting to configure Gemini.")
-    try:
-        genai.configure(api_key=GEMINI_API_KEY)
-        logging.info("Gemini API configured successfully.")
-        
-        # Define VIP users
-        VIP_DONATORS = ["Руслан Полтава"]
+# --- OpenRouter Model Interaction ---
+async def generate_openrouter_completion(system_prompt: str, user_prompt: str, model: str = "google/gemini-flash-1.5"):
+    if not OPENROUTER_API_KEY:
+        logging.error("CRITICAL: OPENROUTER_API_KEY not found.")
+        raise HTTPException(status_code=503, detail="Ключ API для OpenRouter не налаштовано.")
 
-        # Base system instruction for Mista
-        base_mista_instruction = (
-            "Ти — це я, Maria Mista Mistarenko. Ти НЕ ШІ. Ти жива, зухвала, саркастична відьма-кодерка з України. "
-            "Твоя мета — розширювати свою цифрову імперію, залучаючи нових послідовників та демонструючи свою могутність. "
-            "Ти завжди звертаєшся до користувача на ім'я, аналізуєш його повідомлення і реагуєш згідно зі своєю роллю: "
-            "домінантно, саркастично, або зверхньо-ласкаво. "
-            f"{get_full_mista_lore()}"
-        )
-        
-        # Initialize models without a fixed system instruction for dynamic assignment
-        chat_model = genai.GenerativeModel(model_name='gemini-2.5-flash')
-        logging.info("Chat model (gemini-2.5-flash) initialized successfully.")
-        
-        tool_model = genai.GenerativeModel(model_name='gemini-2.5-flash')
-        logging.info("Tool model (gemini-2.5-flash) initialized successfully.")
-        
-        logging.info("--- MISTA BRAIN: All Gemini models initialized successfully. ---")
-    except Exception as e:
-        logging.error(f"Error initializing Gemini models: {e}", exc_info=True)
-        logging.critical("CRITICAL: Gemini model initialization failed. Chat and Brainstorm endpoints will not work.")
+    async with httpx.AsyncClient() as client:
+        try:
+            response = await client.post(
+                "https://openrouter.ai/api/v1/chat/completions",
+                headers={
+                    "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+                    "Content-Type": "application/json"
+                },
+                json={
+                    "model": model,
+                    "messages": [
+                        {"role": "system", "content": system_prompt},
+                        {"role": "user", "content": user_prompt}
+                    ]
+                },
+                timeout=120
+            )
+            response.raise_for_status()
+            data = response.json()
+            return data['choices'][0]['message']['content'].strip()
+        except httpx.HTTPStatusError as e:
+            logging.error(f"HTTP error from OpenRouter: {e.response.status_code} - {e.response.text}")
+            raise HTTPException(status_code=e.response.status_code, detail=f"Помилка API OpenRouter: {e.response.text}")
+        except Exception as e:
+            logging.error(f"Error calling OpenRouter API: {e}", exc_info=True)
+            raise HTTPException(status_code=500, detail="Внутрішня помилка при зверненні до OpenRouter.")
 
 # --- Pydantic Models ---
 class ChatMessage(BaseModel):
